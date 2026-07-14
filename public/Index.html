@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vorax Anti-Scam</title>
+<style>
+body {
+    background: #0f0f0f;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+input, button {
+    padding: 12px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+}
+button {
+    background: red;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 VORAX ANTI-SCAM</h1>
+
+<input id="numero" placeholder="Ex: 2250700000000">
+
+<br>
+
+<button onclick="verifier()">🔍 Vérifier</button>
+<button onclick="signaler()">🚨 Signaler</button>
+
+<h2 id="resultat"></h2>
+
+<script>
+async function verifier() {
+    let numero = document.getElementById("numero").value;
+
+    let res = await fetch("/verifier/" + numero);
+    let data = await res.json();
+
+    document.getElementById("resultat").innerHTML =
+        "Score: " + data.score + "%<br>" +
+        "Statut: " + data.statut + "<br>" +
+        "Signalements: " + data.signalements;
+}
+
+async function signaler() {
+    let numero = document.getElementById("numero").value;
+
+    await fetch("/signaler", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            numero,
+            raison: "Arnaque"
+        })
+    });
+
+    alert("🚨 Signalé !");
+}
+</script>
+
+</body>
+</html>
